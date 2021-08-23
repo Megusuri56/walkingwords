@@ -51,6 +51,7 @@ function modeAct()
 {
 if(mode =="write")
         {
+            document.getElementById("word").innerHTML=word.word;
             document.getElementById("know").setAttribute("hidden",true);
             document.getElementById("notknow").setAttribute("hidden",true);
             document.forms["input"]["inputbox"].removeAttribute("hidden");
@@ -58,6 +59,7 @@ if(mode =="write")
         }
         else
         {
+            document.getElementById("word").innerHTML=word.word+"("+word.furigana+")";
             document.getElementById("know").removeAttribute("hidden");
             document.getElementById("notknow").removeAttribute("hidden");
             document.forms["input"]["inputbox"].setAttribute("hidden",true);
@@ -93,7 +95,6 @@ xmlhttp.onreadystatechange=function()
     var result = JSON.parse(xmlhttp.responseText);
     result = result.RECORDS;
     word=result[Math.round(Math.random()*1699)]
-    document.getElementById("word").innerHTML=word.word;
     document.getElementById("meaning").innerHTML=word.meaning;
     modeAct();
     }
