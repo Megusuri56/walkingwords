@@ -8,6 +8,16 @@
     <link rel="shortcut icon" href="img/favicon.png">
 </head>
 <body>
+<div id="test"></div>
+<button onclick="show()">button</button>
+<script type="text/javascript">
+function show(){
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.open("POST","/words.json",true);
+xmlhttp.send(null);
+document.getElementById("test").innerHTML = xmlhttp.readyState+"abc";
+}
+</script>
     <h2>正在施工中...</h2>
     <pre>
                                                                                                                                                    
