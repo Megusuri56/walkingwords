@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -11,11 +10,12 @@
 </head>
 <body style="background-color:#ffd480">
     <h2>背单词</h2>
-    <h4 id="word"></h4>
+    <h4 id="word">加载中，请稍候...</h4>
     <h4 id="meaning" hidden></h4>
     <form name="input" >
-        <input type="text" name="inputbox"/ oninput="check()">
+        <input type="text" name="inputbox"/ oninput="check()" onmousemove="showHint()" onmouseout="hideHint()">
     </form>
+    <p id="hint" style="line-height:50%;font-size:0.6em;color:#cc8800"><br /></p>
     <button id="know" onclick="showWord()" hidden>我认识</button>
     <button id="notknow" onclick="showMeaning()" hidden>我不认识</button>
     <br /><br />
@@ -24,6 +24,16 @@
     showWord();
     var word;
     var mode = "write";
+
+    function showHint()
+    {
+         document.getElementById("hint").innerHTML = "按空格提交单词";
+    }
+    function hideHint()
+    {
+         document.getElementById("hint").innerHTML = "<br />";
+    }
+
     function modeswitch()
     {
         if(mode =="write")
