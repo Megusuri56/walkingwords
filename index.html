@@ -15,7 +15,7 @@ function show(){
 var xmlhttp = new XMLHttpRequest();
 xmlhttp.open("POST","/words.json",true);
 xmlhttp.send(null);
-document.getElementById("test").innerHTML = xmlhttp.readyState+"abc";
+document.getElementById("test").innerHTML = xmlhttp.responseText+"abc";
 }
 </script>
     <h2>正在施工中...</h2>
