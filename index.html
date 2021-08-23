@@ -8,16 +8,35 @@
     <link rel="shortcut icon" href="img/favicon.png">
 </head>
 <body>
-<div id="test"></div>
-<button onclick="show()">button</button>
+<h2>背单词</h2>
+<script type="text/javascript">showWord();</script>
+<h4 id="word"></h4>
+<button onclick="showWord()">我认识</button>
 <script type="text/javascript">
-function show(){
-var xmlhttp = new XMLHttpRequest();
-xmlhttp.open("POST","/words.json",true);
-xmlhttp.send(null);
-document.getElementById("test").innerHTML = xmlhttp.responseText+"abc";
+function showWord()
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    var result = JSON.parse(xmlhttp.responseText);
+    result = result.RECORDS;
+    var word=result[Math.round(Math.random()*1699)]
+    document.getElementById("word").innerHTML=word.word+"("+word.furigana+")";
+    }
 }
-</script>
+xmlhttp.open("GET","https://megusuri56.github.io/words.json",true);
+xmlhttp.send();
+}</script>
     <h2>正在施工中...</h2>
     <pre>
                                                                                                                                                    
@@ -300,6 +319,6 @@ document.getElementById("test").innerHTML = xmlhttp.responseText+"abc";
 
                                           
 </pre>
-<img src="img/annoying _dog_in_a_car.gif" alt="←这张图显示不出来了"  onclick="alert('这是一只狗狗！')" title="狗狗" />
+<img src="img/annoying_dog_in_a_car.gif" alt="←这张图显示不出来了"  onclick="alert('这是一只狗狗！')" title="狗狗" />
 </body>
 </html>
