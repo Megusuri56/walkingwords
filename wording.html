@@ -93,7 +93,7 @@ xmlhttp.onreadystatechange=function()
     var result = JSON.parse(xmlhttp.responseText);
     result = result.RECORDS;
     word=result[Math.round(Math.random()*1699)]
-    document.getElementById("word").innerHTML=word.word+"("+word.furigana+")";
+    document.getElementById("word").innerHTML=word.word;
     document.getElementById("meaning").innerHTML=word.meaning;
     modeAct();
     }
