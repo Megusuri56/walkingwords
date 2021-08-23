@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>散步背单词</title>
+    <meta name="author" content="目薬">
+    <meta name="copyright" content="目薬">
+    <link rel="shortcut icon" href="img/favicon.png">
+</head>
+<body style="background-color:#ffd480">
+    <h2>背单词</h2>
+    <h4 id="word"></h4>
+    <h4 id="meaning" hidden></h4>
+    <form name="input" >
+        <input type="text" name="inputbox"/ oninput="check()">
+    </form>
+    <button id="know" onclick="showWord()" hidden>我认识</button>
+    <button id="notknow" onclick="showMeaning()" hidden>我不认识</button>
+    <br /><br />
+    <button id="switch" onclick="modeswitch()">切换模式</button>
+    <script type="text/javascript">
+    showWord();
+    var word;
+    var mode = "write";
+    function modeswitch()
+    {
+        if(mode =="write")
+        {
+            mode = "read";
+        }
+        else
+        {
+            mode = "write";
+        }
+        modeAct();
+    }
+
+function modeAct()
+{
+if(mode =="write")
+        {
+            document.getElementById("know").setAttribute("hidden",true);
+            document.getElementById("notknow").setAttribute("hidden",true);
+            document.forms["input"]["inputbox"].removeAttribute("hidden");
+            document.getElementById("meaning").removeAttribute("hidden");
+        }
+        else
+        {
+            document.getElementById("know").removeAttribute("hidden");
+            document.getElementById("notknow").removeAttribute("hidden");
+            document.forms["input"]["inputbox"].setAttribute("hidden",true);
+            document.getElementById("meaning").setAttribute("hidden",true);
+        }
+}
+
+function check()
+{
+var input = document.forms["input"]["inputbox"].value;
+if(input==word.furigana+" ")
+{
+showWord();
+document.forms["input"]["inputbox"].value = "";
+}
+} 
+
+function showWord()
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    var result = JSON.parse(xmlhttp.responseText);
+    result = result.RECORDS;
+    word=result[Math.round(Math.random()*1699)]
+    document.getElementById("word").innerHTML=word.word+"("+word.furigana+")";
+    document.getElementById("meaning").innerHTML=word.meaning;
+    modeAct();
+    }
+}
+xmlhttp.open("GET","https://megusuri56.github.io/words.json",true);
+xmlhttp.send();
+}
+    function showMeaning()
+    {
+    document.getElementById("meaning").removeAttribute("hidden");
+    }
+</script>
+</body>
+</html>

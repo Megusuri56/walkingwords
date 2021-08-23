@@ -2,54 +2,20 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title>目薬的个人网站</title>
     <meta name="author" content="目薬">
     <meta name="copyright" content="目薬">
     <link rel="shortcut icon" href="img/favicon.png">
+    <script type="text/javascript">
+        function wording()
+        {
+            window.open("https://megusuri56.github.io/wording.html", "_self");
+        }
+    </script>
 </head>
 <body>
-    <h2>背单词</h2>
-    <script type="text/javascript">showWord();</script>
-    <h4 id="word"></h4>
-    <h4 id="meaning" hidden></h4>
-    <button id="start" onclick="showWord()">开始</button>
-    <button id="know" onclick="showWord()" hidden>我认识</button>
-    <button id="notknow" onclick="showMeaning()" hidden>我不认识</button>
-    <script type="text/javascript">
-function showWord()
-{
-var xmlhttp;
-if (window.XMLHttpRequest)
-  {
-  xmlhttp=new XMLHttpRequest();
-  }
-else
-  {
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-    var result = JSON.parse(xmlhttp.responseText);
-    result = result.RECORDS;
-    var word=result[Math.round(Math.random()*1699)]
-    document.getElementById("word").innerHTML=word.word+"("+word.furigana+")";
-    document.getElementById("meaning").innerHTML=word.meaning;
-    document.getElementById("meaning").setAttribute("hidden",true);
-    document.getElementById("start").setAttribute("hidden",true);
-    document.getElementById("know").removeAttribute("hidden");
-    document.getElementById("notknow").removeAttribute("hidden");
-    }
-}
-xmlhttp.open("GET","https://megusuri56.github.io/words.json",true);
-xmlhttp.send();
-}
-    function showMeaning()
-    {
-    document.getElementById("meaning").removeAttribute("hidden");
-    }
-</script>
+    <h2 onclick="wording()" style="text-decoration:underline;color:#ffd480">背单词</h2>
     <h2>正在施工中...</h2>
     <pre>
                                                                                                                                                    
