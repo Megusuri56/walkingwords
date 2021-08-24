@@ -24,7 +24,7 @@
         }
     </style>
 </head>
-<body style="background-color:#ffd480" onunload="setCookie()">
+<body style="background-color:#ffd480">
     <div class="topright">
         <!-- div id="signIn" onclick="signIn()" style="text-decoration:underline">登录</div-->
     </div>
@@ -61,8 +61,7 @@
 
         if (cookie == "")
         {
-            var newCookie = "knowAmount=-1;wordsAmount=50;days=0;allwords=-1;today="+today.toGMTString()+";"+expires;
-            document.cookie = newCookie;
+            setCookie();
         }
         else
         {
@@ -72,14 +71,16 @@
             }
             days = Number(getCookie("days"));
             allwords = Number(getCookie("allwords"));
-            alert(document.cookie);
         }
     }
 
     function setCookie()
     {
-        document.cookie = "knowAmount="+knowAmount.toString()+";wordsAmount=50;days="+days.toString()+";allwords="+allwords.toString()+";today="+today.toGMTString+";"+expires;
-        alert(document.cookie);
+        document.cookie = "knowAmount="+knowAmount.toString()+";"+expires;
+        document.cookie = "wordsAmount=50;"+expires;
+        document.cookie = "days="+days.toString()+";"+expires;
+        document.cookie = "allwords="+allwords.toString()+";"+expires;
+        document.cookie = "today="+today.toGMTString+";"+expires;
     }
 
 function getCookie(cname)
@@ -171,6 +172,7 @@ xmlhttp.onreadystatechange=function()
     document.getElementById("amount").getElementsByTagName("span")[0].innerHTML=knowAmount.toString();
     document.getElementById("amount").getElementsByTagName("span")[1].innerHTML=days.toString();
     document.getElementById("amount").getElementsByTagName("span")[2].innerHTML=allwords.toString();
+    setCookie();
     }
 }
 xmlhttp.open("GET","https://megusuri56.github.io/words.json",true);
