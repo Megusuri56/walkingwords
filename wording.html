@@ -78,6 +78,7 @@
     function setCookie()
     {
         document.cookie = "knowAmount="+knowAmount.toString()+";wordsAmount=50;days="+days.toString()+";allwords="+allwords.toString()+";today="+today.toGMTString+";"+expires;
+        alert(document.cookie);
     }
 
 function getCookie(cname)
