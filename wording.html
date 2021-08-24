@@ -49,7 +49,7 @@
     var allwords = -1;
     var d = new Date();
     d.setTime(d.getTime()+90*24*60*60*1000);
-    var expires = "expires="+d.toGMTString();
+    var expires = "expires="+d.toUTCString();
     checkCookie();
     showWord();
 
@@ -65,7 +65,7 @@
         }
         else
         {
-            if (getCookie("today")==today.toGMTString())
+            if (getCookie("today")==todaytoLocaleDateString())
             {
                 knowAmount = Number(getCookie("knowAmount"))-1;
             }
@@ -80,7 +80,7 @@
         document.cookie = "wordsAmount=50;"+expires;
         document.cookie = "days="+days.toString()+";"+expires;
         document.cookie = "allwords="+allwords.toString()+";"+expires;
-        document.cookie = "today="+today.toGMTString()+";"+expires;
+        document.cookie = "today="+todaytoLocaleDateString()+";"+expires;
     }
 
 function getCookie(cname)
