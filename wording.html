@@ -42,8 +42,6 @@
     <p class="hintText" id="amount"><br />你今天已经认识了<span>未知</span>个单词，总共打卡<span>未知</span>天，认识了<span>未知</span>个单词</p>
 </body>
 <script type="text/javascript">
-    checkCookie();
-    showWord();
     var word;
     var mode = "write";
     var knowAmount = -1;
@@ -51,7 +49,9 @@
     var allwords = -1;
     var d = new Date();
     d.setTime(d.getTime()+90*24*60*60*1000);
-    var expires = "expires="+d.toGMTString()
+    var expires = "expires="+d.toGMTString();
+    checkCookie();
+    showWord();
 
     function checkCookie()
     {
@@ -61,7 +61,8 @@
 
         if (cookie == "")
         {
-            document.cookie = "knowAmount=0;wordsAmount=50;days=0;allwords=0;today="+today.toGMTString+";"+expires;
+            var newCookie = "knowAmount=0;wordsAmount=50;days=0;allwords=0;today="+today.toGMTString()+";"+expires;
+            document.cookie = newCookie;
         }
         else
         {
