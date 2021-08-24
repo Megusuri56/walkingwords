@@ -24,7 +24,7 @@
         }
     </style>
 </head>
-<body style="background-color:#ffd480">
+<body style="background-color:#ffd480" onunload="setCookie()">
     <div class="topright">
         <!-- div id="signIn" onclick="signIn()" style="text-decoration:underline">登录</div-->
     </div>
@@ -61,7 +61,7 @@
 
         if (cookie == "")
         {
-            var newCookie = "knowAmount=0;wordsAmount=50;days=0;allwords=0;today="+today.toGMTString()+";"+expires;
+            var newCookie = "knowAmount=-1;wordsAmount=50;days=0;allwords=-1;today="+today.toGMTString()+";"+expires;
             document.cookie = newCookie;
         }
         else
