@@ -7,23 +7,89 @@
     <meta name="author" content="目薬">
     <meta name="copyright" content="目薬">
     <link rel="shortcut icon" href="img/favicon.png">
+    <style type="text/css">
+        .topright{
+        float:right;
+        margin-top:0px;
+        margin-right:0px;
+        line-height:0%;
+        font-size:0.85em;
+        color:#cc8800;
+        vertical-align:top;
+        }
+        .hintText{
+        line-height:50%;
+        font-size:0.6em;
+        color:#cc8800;
+        }
+    </style>
 </head>
 <body style="background-color:#ffd480">
+    <div class="topright">
+        <!-- div id="signIn" onclick="signIn()" style="text-decoration:underline">登录</div-->
+    </div>
     <h2>背单词</h2>
     <h4 id="word">加载中，请稍候...</h4>
     <h4 id="meaning" hidden></h4>
-    <form name="input" >
-        <input type="text" name="inputbox"/ oninput="check()" onmousemove="showHint()" onmouseout="hideHint()">
+    <form name="input">
+        <input type="text" name="inputbox" oninput="check()" onmousemove="showHint()" onmouseout="hideHint()"/>
     </form>
-    <p id="hint" style="line-height:50%;font-size:0.6em;color:#cc8800"><br /></p>
+    <p class="hintText" id="hint"><br /></p>
     <button id="know" onclick="showWord()" hidden>我认识</button>
     <button id="notknow" onclick="showMeaning()" hidden>我不认识</button>
     <br /><br />
     <button id="switch" onclick="modeswitch()">切换模式</button>
-    <script type="text/javascript">
+    <p class="hintText" id="amount"><br />你今天已经认识了<span>未知</span>个单词，总共打卡<span>未知</span>天，认识了<span>未知</span>个单词</p>
+</body>
+<script type="text/javascript">
+    checkCookie();
     showWord();
     var word;
     var mode = "write";
+    var knowAmount = -1;
+    var days = 0;
+    var allwords = -1;
+    var d = new Date();
+    d.setTime(d.getTime()+90*24*60*60*1000);
+    var expires = "expires="+d.toGMTString()
+
+    function checkCookie()
+    {
+        var cookie = document.cookie;
+        var today = new Date();
+        today.setTime(today.getTime());
+
+        if (cookie == "")
+        {
+            document.cookie = "knowAmount=0;wordsAmount=50;days=0;allwords=0;today="+today.toGMTString+";"+expires;
+        }
+        else
+        {
+            if (getCookie("today")==today.toGMTString)
+            {
+                knowAmount = Number(getCookie("knowAmount"));
+            }
+            days = Number(getCookie("days"));
+            allwords = Number(getCookie("allwords"));
+        }
+    }
+
+    function setCookie()
+    {
+        document.cookie = "knowAmount="+knowAmount.toString()+";wordsAmount=50;days="+days.toString()+";allwords="+allwords.toString()+";today="+today.toGMTString+";"+expires;
+    }
+
+function getCookie(cname)
+{
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0; i<ca.length; i++) 
+  {
+    var c = ca[i].trim();
+    if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+  }
+  return "";
+}
 
     function showHint()
     {
@@ -97,6 +163,11 @@ xmlhttp.onreadystatechange=function()
     word=result[Math.round(Math.random()*1699)]
     document.getElementById("meaning").innerHTML=word.meaning;
     modeAct();
+    knowAmount++;
+    allwords++;
+    document.getElementById("amount").getElementsByTagName("span")[0].innerHTML=knowAmount.toString();
+    document.getElementById("amount").getElementsByTagName("span")[1].innerHTML=days.toString();
+    document.getElementById("amount").getElementsByTagName("span")[2].innerHTML=allwords.toString();
     }
 }
 xmlhttp.open("GET","https://megusuri56.github.io/words.json",true);
@@ -107,5 +178,4 @@ xmlhttp.send();
     document.getElementById("meaning").removeAttribute("hidden");
     }
 </script>
-</body>
 </html>
