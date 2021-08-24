@@ -67,10 +67,10 @@
         {
             if (getCookie("today")==today.toGMTString())
             {
-                knowAmount = Number(getCookie("knowAmount"));
+                knowAmount = Number(getCookie("knowAmount"))-1;
             }
             days = Number(getCookie("days"));
-            allwords = Number(getCookie("allwords"));
+            allwords = Number(getCookie("allwords"))-1;
         }
     }
 
@@ -80,7 +80,7 @@
         document.cookie = "wordsAmount=50;"+expires;
         document.cookie = "days="+days.toString()+";"+expires;
         document.cookie = "allwords="+allwords.toString()+";"+expires;
-        document.cookie = "today="+today.toGMTString+";"+expires;
+        document.cookie = "today="+today.toGMTString()+";"+expires;
     }
 
 function getCookie(cname)
