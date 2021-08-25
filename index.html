@@ -244,6 +244,8 @@ xmlhttp.onreadystatechange=function()
     {
     wordList = JSON.parse(xmlhttp.responseText);
     wordList = wordList.RECORDS;
+
+    document.getElementById("word").style.color="#000000";
     let i=Math.round(Math.random()*50);
     if (i<=(wordsAmount-notknowArr.length))
     {
@@ -251,8 +253,8 @@ xmlhttp.onreadystatechange=function()
     }
     else
     {
-        word=notknowArr[Math.round(Math.random()*(notknowArr.length-1))];
-alert(notknow.toString());
+        word=findNK(notknowArr[Math.round(Math.random()*(notknowArr.length-1))]);
+        document.getElementById("word").style.color="#994d00";
     }
     document.getElementById("meaning").innerHTML=word.meaning;
     modeAct();
@@ -341,7 +343,7 @@ else
     document.getElementById("know").innerHTML="下一个";
     document.getElementById("know").onclick=showWord;
 }
-addNK(word);
+addNK(word.furigana);
 }
 function knowAct()
 {
