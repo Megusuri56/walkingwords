@@ -236,9 +236,10 @@ function checkBrowser()
 {
 if (!!navigator.userAgent.match(/AppleWebKit.*Mobile.*/))
 {
+    document.getElementsByTagName("h2")[0].innerHTML="背单词<br /><br />";
     document.getElementById("word").style="text-align: center";
     document.getElementById("meaning").style="text-align: center";
-    document.getElementById("buttons").style="margin: auto;width: 220px";
+    document.getElementById("buttons").style="margin-left:20%";
     document.getElementById("buttonsR").style="margin: auto;width:133px";
     document.getElementById("switch").style="position:absolute;bottom:10%";
     document.getElementById("amount").style="line-height:130%;position:absolute;bottom:10px";
