@@ -104,7 +104,7 @@
     var mode = "write";
     var knowAmount = 0;
     var wordsAmount = 50;
-    var oldwordsAmount = 0;
+    var oldwordsAmount = 35;
     var days = 0;
     var allwords = 0;
     var d = new Date();
@@ -245,13 +245,13 @@ xmlhttp.onreadystatechange=function()
     wordList = JSON.parse(xmlhttp.responseText);
     wordList = wordList.RECORDS;
     let i=Math.round(Math.random()*50);
-    if (i<=(wordsAmount-oldwordsAmount))
+    if (i<=(wordsAmount-notknowArr.length))
     {
         word=wordList[Math.round(Math.random()*1699)];
     }
     else
     {
-        word=notknowArr[Math.round(Math.random()*notknowArr.length)];
+        word=notknowArr[Math.round(Math.random()*(notknowArr.length-1))];
     }
     document.getElementById("meaning").innerHTML=word.meaning;
     modeAct();
@@ -357,7 +357,7 @@ function getNKArr()
 {
   for(let i=0; i<oldwordsAmount; i++) 
   {
-    notknowArr.push(getCookie("w"+i.toString()));
+    addNK(getCookie("w"+i.toString()));
   }
 }
 function setNKCookie()
@@ -369,7 +369,7 @@ function setNKCookie()
 }
 function findNK(target)
 {
-    if (indexOf(target)!=-1)
+    if (notknowArr.indexOf(target)!=-1)
     {
         for(let w of wordList)
         {
@@ -387,7 +387,7 @@ function findNK(target)
 }
 function addNK(target)
 {
-    if (notknowArr.length<oldwordsAmount&&indexOf(target)==-1&&target!="")
+    if (notknowArr.length<oldwordsAmount&&notknowArr.indexOf(target)==-1&&target!="")
     {
         notknowArr.push(target);
     }
