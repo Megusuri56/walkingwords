@@ -30,8 +30,7 @@
             left:5%
          }
         #switchMobile span {
-	background:#9CA1A5;
-	color:#eeeeee;
+	background:#fde5ba;
 	
 	padding: 5px 30px 5px 30px;
 	font-size:16px;
@@ -74,20 +73,20 @@
     <div id="copy"></div>
 <form name="input">
         <input type="text" name="inputbox" oninput="check()" onmousemove="showHint()" onmouseout="hideHint()" hidden />
-        <span class="hintText" id="notknowW" style="text-decoration-line:underline" onclick="showFurigana()" hidden>我不认识</span>
+        <span class="hintText" id="notknowW" style="text-decoration-line:underline" onclick="notknowAct()" hidden>查看答案</span>
 </form>
     <p class="hintText" id="hint"><br /></p>
 </div>
 <div id="buttonsR">
-    <button id="know" onclick="showWord()" hidden>我认识</button>
-    <button id="notknow" onclick="showMeaning()" hidden>我不认识</button>
+    <button id="know" onclick="knowAct()" hidden>我认识</button>
+    <button id="notknow" onclick="notknowAct()" hidden>我不认识</button>
 </div>
     <br /><br />
     <p style="line-height:0%"></p>
 <div id="switchBox">
     <div id="switch" onclick="modeswitch()" hidden><button>切换模式</button></div>
 </div>
-    <p class="hintText" id="amount" style="line-height:110%" hidden><br />你今天已经认识了<span></span>个单词，总共打卡<span></span>天，认识了<span></span>个单词</p>
+    <p class="hintText" id="amount" style="line-height:110%" hidden><br />你今天已经认识了<span>_</span>个单词，总共打卡<span>_</span>天，认识了<span>_</span>个单词</p>
 
 <div class="help" onclick='document.getElementsByClassName("help")[0].setAttribute("hidden",true)' hidden>
     <div class="helpText">
@@ -98,21 +97,24 @@
     <p style="text-align: right">目薬</p>
     </div>
 </div>
-
 </body>
+
 <script type="text/javascript">
     var word;
     var mode = "write";
-    var knowAmount = -1;
+    var knowAmount = 0;
     var wordsAmount = 50;
+    var oldwordsAmount = 0;
     var days = 0;
-    var allwords = -1;
+    var allwords = 0;
     var d = new Date();
     d.setTime(d.getTime()+90*24*60*60*1000);
     var expires = "expires="+d.toGMTString();
     var today = new Date();
     today.setTime(today.getTime());
-    var punchedIn = 0;    
+    var punchedIn = 0;
+    var notknowArr = new Array();
+    var wordList;    
 
     checkBrowser();
     checkCookie();
@@ -134,12 +136,14 @@
         {
             if (getCookie("today")==today.toLocaleDateString())
             {
-                knowAmount = Number(getCookie("knowAmount"))-1;
+                knowAmount = Number(getCookie("knowAmount"));
                 punchedIn = Number(getCookie("punchedIn"));
             }
             days = Number(getCookie("days"));
-            allwords = Number(getCookie("allwords"))-1;
+            allwords = Number(getCookie("allwords"));
             wordsAmount = Number(getCookie("wordsAmount"));
+            oldwordsAmount = Number(getCookie("oldwordsAmount"));
+            getNKArr();
         }
     }
 
@@ -147,10 +151,12 @@
     {
         document.cookie = "knowAmount="+knowAmount.toString()+";"+expires;
         document.cookie = "wordsAmount="+wordsAmount.toString()+";"+expires;
+        document.cookie = "oldwordsAmount="+oldwordsAmount.toString()+";"+expires;
         document.cookie = "days="+days.toString()+";"+expires;
         document.cookie = "allwords="+allwords.toString()+";"+expires;
         document.cookie = "today="+today.toLocaleDateString()+";"+expires;
         document.cookie = "punchedIn="+punchedIn.toString()+";"+expires;
+        setNKCookie();
     }
 
 function getCookie(cname)
@@ -206,6 +212,8 @@ if(mode =="write")
             document.forms["input"]["inputbox"].setAttribute("hidden",true);
             document.getElementById("meaning").setAttribute("hidden",true);
             document.getElementById("notknowW").setAttribute("hidden",true);
+            document.getElementById("know").innerHTML="我认识";
+            document.getElementById("know").onclick=knowAct;
         }
 }
 
@@ -214,7 +222,7 @@ function check()
 var input = document.forms["input"]["inputbox"].value;
 if(input==word.furigana+" ")
 {
-showWord();
+knowAct();
 document.forms["input"]["inputbox"].value = "";
 }
 } 
@@ -234,21 +242,22 @@ xmlhttp.onreadystatechange=function()
   {
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
-    var result = JSON.parse(xmlhttp.responseText);
-    result = result.RECORDS;
-    word=result[Math.round(Math.random()*1699)]
+    wordList = JSON.parse(xmlhttp.responseText);
+    wordList = wordList.RECORDS;
+    let i=Math.round(Math.random()*50);
+    if (i<=(wordsAmount-oldwordsAmount))
+    {
+        word=wordList[Math.round(Math.random()*1699)];
+    }
+    else
+    {
+        word=notknowArr[Math.round(Math.random()*notknowArr.length)];
+    }
     document.getElementById("meaning").innerHTML=word.meaning;
     modeAct();
-    knowAmount++;
-    allwords++;
-    if (knowAmount>=wordsAmount&&punchedIn==0)
-    {
-        punchIn();
-    }
     document.getElementById("amount").getElementsByTagName("span")[0].innerHTML=knowAmount.toString();
     document.getElementById("amount").getElementsByTagName("span")[1].innerHTML=days.toString();
     document.getElementById("amount").getElementsByTagName("span")[2].innerHTML=allwords.toString();
-    setCookie();
     }
 }
 xmlhttp.open("GET","https://megusuri56.github.io/walkingwords/words.json",true);
@@ -302,6 +311,7 @@ if (!!navigator.userAgent.match(/AppleWebKit.*Mobile.*/))
     document.getElementById("word").style="text-align: center;font-size:2em";
     document.getElementById("meaning").style="text-align: center";
     document.getElementById("buttons").style="margin-left:20%";
+    document.getElementById("notknowW").style="text-decoration-line:underline;font-size:1.1em";
     document.getElementById("buttonsR").style="margin: auto;width:133px";
     document.getElementById("switchBox").id="switchMobile";
     document.getElementById("switch").innerHTML="<span>切换模式</span>";
@@ -316,6 +326,71 @@ function punchIn()
     days++;
     punchedIn=1;
     alert("✨恭喜你，成功打卡！✨");
+}
+
+function notknowAct()
+{
+if (mode=="write")
+{
+    showFurigana();
+}
+else
+{
+    showMeaning();
+    document.getElementById("know").innerHTML="下一个";
+    document.getElementById("know").onclick=showWord;
+}
+addNK(word);
+}
+function knowAct()
+{
+    showWord();
+    knowAmount++;
+    allwords++;
+    if (knowAmount>=wordsAmount&&punchedIn==0)
+    {
+        punchIn();
+    }
+    setCookie();
+}
+function getNKArr()
+{
+  for(let i=0; i<oldwordsAmount; i++) 
+  {
+    notknowArr.push(getCookie("w"+i.toString()));
+  }
+}
+function setNKCookie()
+{
+  for(let i=0; i<oldwordsAmount; i++) 
+  {
+        document.cookie = "w"+i.toString()+"="+notknowArr[i]+";"+expires;
+  }    
+}
+function findNK(target)
+{
+    if (indexOf(target)!=-1)
+    {
+        for(let w of wordList)
+        {
+            if(w.furigana==target)
+            {
+                return w;
+            }
+        }
+        return null;
+    }
+    else
+    {
+        return null;
+    }
+}
+function addNK(target)
+{
+    if (notknowArr.length<oldwordsAmount&&indexOf(target)==-1&&target!="")
+    {
+        notknowArr.push(target);
+    }
 }
 </script>
 </html>
