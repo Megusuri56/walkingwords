@@ -31,16 +31,19 @@
     <h4 id="word">加载中，请稍候...</h4>
     <h4 id="meaning" hidden></h4>
 
-    <img id="voice" src="img/voice.png" onclick="Voice()" onmousemove='document.getElementById("copyHint").removeAttribute("hidden")' onmouseout='document.getElementById("copyHint").setAttribute("hidden",true)' hidden></img><span class="hintText" id="copyHint" hidden>点击复制音频链接</span>
+<div id="buttons">
+    <img id="voice" src="img/voice.png" onclick="Voice()" onmousemove='document.getElementById("copyHint").removeAttribute("hidden")' onmouseout='document.getElementById("copyHint").setAttribute("hidden",true)' title="音频" hidden></img><span class="hintText" id="copyHint" hidden>点击复制音频链接</span>
     <div id="copy"></div>
 <form name="input">
         <input type="text" name="inputbox" oninput="check()" onmousemove="showHint()" onmouseout="hideHint()" hidden />
         <span class="hintText" id="notknowW" style="text-decoration-line:underline" onclick="showFurigana()" hidden>我不认识</span>
 </form>
-
     <p class="hintText" id="hint"><br /></p>
+</div>
+<div id="buttonsR">
     <button id="know" onclick="showWord()" hidden>我认识</button>
     <button id="notknow" onclick="showMeaning()" hidden>我不认识</button>
+</div>
     <br /><br />
     <p style="line-height:0%"></p>
     <button id="switch" onclick="modeswitch()" hidden>切换模式</button>
@@ -233,7 +236,15 @@ function checkBrowser()
 {
 if (!!navigator.userAgent.match(/AppleWebKit.*Mobile.*/))
 {
-    document.getElementById("amount").style="line-height:200%;position:absolute;bottom:0px";
+    document.getElementById("word").style="text-align: center";
+    document.getElementById("meaning").style="text-align: center";
+    document.getElementById("buttons").style="margin: auto;width: 220px";
+    document.getElementById("buttonsR").style="margin: auto;width:133px";
+    document.getElementById("switch").style="position:absolute;bottom:10%";
+    document.getElementById("amount").style="line-height:130%;position:absolute;bottom:10px";
+    document.getElementById("amount").getElementsByTagName("span")[0].style="font-size:2em";
+    document.getElementById("amount").getElementsByTagName("span")[1].style="font-size:2em";
+    document.getElementById("amount").getElementsByTagName("span")[2].style="font-size:2em";
 }
 }
 </script>
