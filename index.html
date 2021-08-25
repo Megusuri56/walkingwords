@@ -53,6 +53,7 @@
     var word;
     var mode = "write";
     var knowAmount = -1;
+    var wordsAmount = 50;
     var days = 0;
     var allwords = -1;
     var d = new Date();
@@ -60,6 +61,8 @@
     var expires = "expires="+d.toGMTString();
     var today = new Date();
     today.setTime(today.getTime());
+    var punchedIn = 0;    
+
     checkBrowser();
     checkCookie();
     showWord();
@@ -81,19 +84,22 @@
             if (getCookie("today")==today.toLocaleDateString())
             {
                 knowAmount = Number(getCookie("knowAmount"))-1;
+                punchedIn = Number(getCookie("punchedIn"));
             }
             days = Number(getCookie("days"));
             allwords = Number(getCookie("allwords"))-1;
+            wordsAmount = Number(getCookie("wordsAmount"));
         }
     }
 
     function setCookie()
     {
         document.cookie = "knowAmount="+knowAmount.toString()+";"+expires;
-        document.cookie = "wordsAmount=50;"+expires;
+        document.cookie = "wordsAmount="+wordsAmount.toString()+";"+expires;
         document.cookie = "days="+days.toString()+";"+expires;
         document.cookie = "allwords="+allwords.toString()+";"+expires;
         document.cookie = "today="+today.toLocaleDateString()+";"+expires;
+        document.cookie = "punchedIn="+punchedIn.toString()+";"+expires;
     }
 
 function getCookie(cname)
@@ -184,6 +190,10 @@ xmlhttp.onreadystatechange=function()
     modeAct();
     knowAmount++;
     allwords++;
+    if (knowAmount>=wordsAmount&&punchedIn==0)
+    {
+        punchIn();
+    }
     document.getElementById("amount").getElementsByTagName("span")[0].innerHTML=knowAmount.toString();
     document.getElementById("amount").getElementsByTagName("span")[1].innerHTML=days.toString();
     document.getElementById("amount").getElementsByTagName("span")[2].innerHTML=allwords.toString();
@@ -237,7 +247,7 @@ function checkBrowser()
 if (!!navigator.userAgent.match(/AppleWebKit.*Mobile.*/))
 {
     document.getElementsByTagName("h2")[0].innerHTML="背单词<br /><br />";
-    document.getElementById("word").style="text-align: center";
+    document.getElementById("word").style="text-align: center;font-size:2em";
     document.getElementById("meaning").style="text-align: center";
     document.getElementById("buttons").style="margin-left:20%";
     document.getElementById("buttonsR").style="margin: auto;width:133px";
@@ -247,6 +257,12 @@ if (!!navigator.userAgent.match(/AppleWebKit.*Mobile.*/))
     document.getElementById("amount").getElementsByTagName("span")[1].style="font-size:2em";
     document.getElementById("amount").getElementsByTagName("span")[2].style="font-size:2em";
 }
+}
+function punchIn()
+{
+    days++;
+    punchedIn=1;
+    alert("✨恭喜你，成功打卡！✨");
 }
 </script>
 </html>
