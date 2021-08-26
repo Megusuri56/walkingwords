@@ -41,8 +41,8 @@
 	-moz-transition:all linear 0.30s;
 	transition:all linear 0.30s;	
         }
-        .help{position:absolute;top:0;left:0;width:100%;height:100%;}
-        .helpText{
+        .helpBG{position:absolute;top:0;left:0;width:100%;height:100%;}
+        .helpBox{
                   overflow:auto;
 	font-weight:bold;
                   position:absolute;
@@ -74,11 +74,13 @@
 </head>
 
 <body style="background-color:#ffd480">
+</div>
 <div class="bottom">
     <div id="notknowLine" style="background:#fde5ba;position:absolute;top:inherit;bottom:inherit;height:10px;width:10px;border-radius:10px"></div>
     <div id="knowLine" style="background:#cc8800;position:absolute;top:inherit;bottom:inherit;height:10px;width:0px;border-radius:10px"></div>
 </div>
 <div class="topright">
+    <img src="img/settings.png" onclick='document.getElementsByClassName("help")[1].removeAttribute("hidden")'></img>
    <img src="img/info.png" onclick='document.getElementsByClassName("help")[0].removeAttribute("hidden")'></img>
 </div>
 <div id="text">
@@ -107,13 +109,31 @@
 </div>
     <p class="hintText" id="amount" style="line-height:110%" hidden><br />你今天已经认识了<span>_</span>个单词，总共打卡<span>_</span>天，认识了<span>_</span>个单词</p>
 
-<div class="help" onclick='document.getElementsByClassName("help")[0].setAttribute("hidden",true)' hidden>
-    <div class="helpText">
+<div class="help" hidden>
+    <div class="helpBG" onclick='document.getElementsByClassName("help")[0].setAttribute("hidden",true)'></div>
+    <div class="helpBox">
+    <div id="helpText">
     <p>你好！这是我制作的背单词网页，祝你使用愉快！</p>
     <p>本网站使用Cookie存储你的背单词数据，所以一定不要清空Cookie！</p>
     <p>三个月没有打开这个网站的话数据会自动删除哦，所以请按时打卡吧！</p>
     <p>我的Github账号：<a href="https://github.com/Megusuri56" target="_blank">https://github.com/Megusuri56</a>，欢迎关注我！</p>
     <p style="text-align: right">目薬</p>
+    </div>
+    <img id="help_1" src="img/help_1.png" title="help_1" style="position:absolute;height:90%;width:90%;max-height:600px;max-width:579px" hidden></img>
+    <img id="page_left" src="img/page_left_disabled.png" title="向左翻页" style="position:absolute;bottom: 10px;left:47%"></img>
+    <img id="page_right" src="img/page_right.png" title="向右翻页" style="position:absolute;bottom: 10px;left:53%" onclick="page_right(0)"></img>
+    </div>
+</div>
+<div class="help" id="settings" hidden>
+    <div class="helpBG" id="settingsBG" onclick='document.getElementsByClassName("help")[1].setAttribute("hidden",true)'></div>
+    <div class="helpBox">
+    <div id="settings_inner">
+    <p>打卡所需单词数：</p>
+    <input type="number" id="number_wa" min="10" max="200" style='width:100px;font-weight:bold;border-radius:5px;background-color:#dfdfdf' onblur="inputWA()" />
+    <p>存储的最大错误单词数：</p>
+    <input type="number" id="number_oa" min="0" max="80" style='width:100px;font-weight:bold;border-radius:5px;background-color:#dfdfdf' onblur="inputOA()" />
+    <span class="hintText" style="font-weight:normal">需小于打卡所需单词数</span>
+    </div>
     </div>
 </div>
 
@@ -142,6 +162,8 @@
     document.getElementById("switch").removeAttribute("hidden");
     document.forms["input"]["inputbox"].removeAttribute("hidden");
     document.getElementById("notknowW").removeAttribute("hidden");
+    document.getElementById("number_wa").setAttribute("value",wordsAmount.toString());
+    document.getElementById("number_oa").setAttribute("value",oldwordsAmount.toString());
 
     function checkCookie()
     {
@@ -280,6 +302,7 @@ xmlhttp.onreadystatechange=function()
     document.getElementById("amount").getElementsByTagName("span")[1].innerHTML=days.toString();
     document.getElementById("amount").getElementsByTagName("span")[2].innerHTML=allwords.toString();
     notknowLineGrow();
+    knowLineGrow();
     }
 }
 xmlhttp.open("GET","https://megusuri56.github.io/walkingwords/words.json",true);
@@ -444,6 +467,42 @@ function knowLineGrow()
         document.getElementById("knowLine").style.width=(i*99+1).toString()+"%";
          
     }
+}
+function page_right(page)
+{
+    if (page==0)
+    {
+        document.getElementById("helpText").setAttribute("hidden",true); 
+        document.getElementById("help_1").removeAttribute("hidden");
+        document.getElementById("page_left").setAttribute("onclick","page_left(1)");
+        document.getElementById("page_left").setAttribute("src","img/page_left.png");
+        document.getElementById("page_right").setAttribute("src","img/page_right_disabled.png");
+    }
+}
+function page_left(page)
+{
+    if (page==1)
+    {
+        document.getElementById("help_1").setAttribute("hidden",true); 
+        document.getElementById("helpText").removeAttribute("hidden");
+        document.getElementById("page_right").setAttribute("onclick","page_right(0)");
+        document.getElementById("page_right").setAttribute("src","img/page_right.png");
+        document.getElementById("page_left").setAttribute("src","img/page_left_disabled.png");
+    }
+}
+function inputWA()
+{
+    document.getElementById("number_wa").value = Math.round(document.getElementById("number_wa").value);
+    if (document.getElementById("number_wa").value>200){document.getElementById("number_wa").value=200;}
+    if (document.getElementById("number_wa").value<10){document.getElementById("number_wa").value=10;}
+    wordsAmount = document.getElementById("number_wa").value;
+}
+function inputOA()
+{
+    document.getElementById("number_oa").value = Math.round(document.getElementById("number_oa").value);
+    if (document.getElementById("number_oa").value>80){document.getElementById("number_oa").value=80;}
+    if (document.getElementById("number_oa").value<0){document.getElementById("number_oa").value=0;}
+    oldwordsAmount = document.getElementById("number_oa").value;
 }
 </script>
 </body>
