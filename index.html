@@ -70,6 +70,60 @@
         width:99%;
         vertical-align:bottom;
         }
+#color_switch_orange 
+{
+    position:absolute;
+    border:solid 2px #ffc960;
+    border-top-left-radius:10px;
+    border-bottom-left-radius:10px;
+    width:100px;
+    padding: 12px 0;
+	background:#ffd480;
+	font-weight:bold;
+                  text-align:center;
+    box-shadow:inset 0px -5px 5px #ffc960, inset 0px 5px 5px #ffdfa0;
+	}
+#color_switch_gray 
+{
+    position: absolute;
+    left: 133px;
+    border: solid 2px #d4d4d4;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 100px;
+    padding: 12px 0;
+    background: #dfdfdf;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: inset 0px -5px 5px #d4d4d4, inset 0px 5px 5px #E2E2E2;
+	}
+#color_switch_orange_click 
+{
+    position:absolute;
+    border:solid 2px #ffc960;
+    border-top-left-radius:10px;
+    border-bottom-left-radius:10px;
+    width:100px;
+    padding: 12px 0;
+	background:#ffd480;
+	font-weight:bold;
+                  text-align:center;
+    box-shadow:inset 0px 5px 5px #ffc960, inset 0px -5px 5px #ffdfa0;
+	}
+#color_switch_gray_click 
+{
+    position: absolute;
+    left: 133px;
+    border: solid 2px #d4d4d4;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 100px;
+    padding: 12px 0;
+    background: #dfdfdf;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: inset 0px 5px 5px #d4d4d4, inset 0px -5px 5px #E2E2E2;
+	}
     </style>
 </head>
 
@@ -77,7 +131,7 @@
 </div>
 <div class="bottom">
     <div id="notknowLine" style="background:#fde5ba;position:absolute;top:inherit;bottom:inherit;height:10px;width:10px;border-radius:10px"></div>
-    <div id="knowLine" style="background:#cc8800;position:absolute;top:inherit;bottom:inherit;height:10px;width:0px;border-radius:10px"></div>
+    <div id="knowLine" style="background:#cc8800;position:absolute;top:inherit;bottom:inherit;height:10px;width:0px;border-radius:10px" colorable="3"></div>
 </div>
 <div class="topright">
     <img src="img/settings.png" onclick='document.getElementsByClassName("help")[1].removeAttribute("hidden")'></img>
@@ -93,7 +147,7 @@
     <img id="voice" src="img/voice.png" onclick="Voice()" onmousemove='document.getElementById("copyHint").removeAttribute("hidden")' onmouseout='document.getElementById("copyHint").setAttribute("hidden",true)' title="音频" hidden></img><span class="hintText" id="copyHint" hidden>点击复制音频链接</span>
     <div id="copy"></div>
 <form name="input">
-        <input type="text" name="inputbox" oninput="check()" onmousemove="showHint()" onmouseout="hideHint()" hidden />
+        <input type="text" name="inputbox" oninput='check(document.getElementById("meaning").hidden==true)' onmousemove="showHint()" onmouseout="hideHint()" hidden />
         <span class="hintText" id="notknowW" style="text-decoration-line:underline" onclick="notknowAct()" hidden>查看答案</span>
 </form>
     <p class="hintText" id="hint"><br /></p>
@@ -116,6 +170,7 @@
     <p>你好！这是我制作的背单词网页，祝你使用愉快！</p>
     <p>本网站使用Cookie存储你的背单词数据，所以一定不要清空Cookie！</p>
     <p>三个月没有打开这个网站的话数据会自动删除哦，所以请按时打卡吧！</p>
+    <p>更新时数据也有可能自动清除。</p>
     <p>我的Github账号：<a href="https://github.com/Megusuri56" target="_blank">https://github.com/Megusuri56</a>，欢迎关注我！</p>
     <p style="text-align: right">目薬</p>
     </div>
@@ -129,10 +184,13 @@
     <div class="helpBox">
     <div id="settings_inner">
     <p>打卡所需单词数：</p>
-    <input type="number" id="number_wa" min="10" max="200" style='width:100px;font-weight:bold;border-radius:5px;background-color:#dfdfdf' onblur="inputWA()" />
+    <input type="number" id="number_wa" min="10" max="200" style='width:100px;font-weight:bold;border-radius:5px;background-color:#fde5ba' onblur="inputWA()" colorable="2" />
     <p>存储的最大错误单词数：</p>
-    <input type="number" id="number_oa" min="0" max="80" style='width:100px;font-weight:bold;border-radius:5px;background-color:#dfdfdf' onblur="inputOA()" />
+    <input type="number" id="number_oa" min="0" max="80" style='width:100px;font-weight:bold;border-radius:5px;background-color:#fde5ba' onblur="inputOA()"  colorable="2" />
     <span class="hintText" style="font-weight:normal">需小于打卡所需单词数</span>
+     <p>配色模式</p>
+     <div id="color_switch_orange_click"><span style="color:#FFB930">橙</span><span style="color:#F2F2C2">黄</span></div>
+     <div id="color_switch_gray" onclick="color_change_gray()"><span style="color:#FFB930">橙</span><span style="color:#a3a3a3">灰</span></div>
     </div>
     </div>
 </div>
@@ -151,11 +209,13 @@
     var today = new Date();
     today.setTime(today.getTime());
     var punchedIn = 0;
+    var color_mode = "orange";
     var notknowArr = new Array();
     var wordList;    
 
     checkBrowser();
     checkCookie();
+    if (color_mode=="gray"){color_change_gray();}
     showWord();
     document.getElementById("amount").removeAttribute("hidden");
     document.getElementById("voice").removeAttribute("hidden");
@@ -168,7 +228,7 @@
     function checkCookie()
     {
         var cookie = document.cookie;
-        if (cookie == "")
+        if (cookie == ""||getCookie("today")==""||getCookie("knowAmount")==""||getCookie("punchedIn")==""||getCookie("days")==""||getCookie("allwords")==""||getCookie("wordsAmount")==""||getCookie("oldwordsAmount")==""||getCookie("color_mode")=="")
         {
             setCookie();
         }
@@ -183,6 +243,7 @@
             allwords = Number(getCookie("allwords"));
             wordsAmount = Number(getCookie("wordsAmount"));
             oldwordsAmount = Number(getCookie("oldwordsAmount"));
+            color_mode = getCookie("color_mode");
             getNKArr();
         }
     }
@@ -196,6 +257,7 @@
         document.cookie = "allwords="+allwords.toString()+";"+expires;
         document.cookie = "today="+today.toLocaleDateString()+";"+expires;
         document.cookie = "punchedIn="+punchedIn.toString()+";"+expires;
+        document.cookie = "color_mode="+color_mode+";"+expires;
         setNKCookie();
     }
 
@@ -257,12 +319,12 @@ if(mode =="write")
         }
 }
 
-function check()
+function check(meaning_hidden)
 {
 var input = document.forms["input"]["inputbox"].value;
 if(input==word.furigana+" ")
 {
-knowAct();
+if (meaning_hidden){knowAct();}else{showWord();}
 document.forms["input"]["inputbox"].value = "";
 }
 } 
@@ -359,7 +421,7 @@ if (!!navigator.userAgent.match(/AppleWebKit.*Mobile.*/))
     document.getElementById("notknowW").style="text-decoration-line:underline;font-size:1.1em";
     document.getElementById("buttonsR").style="margin: auto;width:133px";
     document.getElementById("switchBox").id="switchMobile";
-    document.getElementById("switch").innerHTML="<span>切换模式</span>";
+    document.getElementById("switch").innerHTML='<span colorable="1">切换模式</span>';
     document.getElementById("amount").style="line-height:130%;position:absolute;bottom:10px";
     for(let i of document.getElementById("amount").getElementsByTagName("span")){i.style="font-size:2em";}
     document.getElementsByClassName("bottom")[0].className="top";
@@ -503,6 +565,28 @@ function inputOA()
     if (document.getElementById("number_oa").value>80){document.getElementById("number_oa").value=80;}
     if (document.getElementById("number_oa").value<0){document.getElementById("number_oa").value=0;}
     oldwordsAmount = document.getElementById("number_oa").value;
+}
+function color_change_gray()
+{
+      color_mode="gray";
+      document.getElementById("color_switch_orange_click").id="color_switch_orange";
+      document.getElementById("color_switch_gray").id="color_switch_gray_click";
+      document.getElementById("color_switch_orange").setAttribute("onclick","color_change_orange()");
+      document.getElementById("color_switch_gray_click").setAttribute("onclick","");
+    for (let i of document.querySelectorAll('[colorable="1"]')){i.style.background="#aaaaaa";i.style.color="#eeeeee";}
+    for (let i of document.querySelectorAll('[colorable="2"]')){i.style.background="#dfdfdf";i.style.color="#000000";}
+    for (let i of document.querySelectorAll('[colorable="3"]')){i.style.background="#aaaaaa"}
+}
+function color_change_orange()
+{
+      color_mode="orange";
+      document.getElementById("color_switch_orange").id="color_switch_orange_click";
+      document.getElementById("color_switch_gray_click").id="color_switch_gray";
+      document.getElementById("color_switch_orange_click").setAttribute("onclick","");
+      document.getElementById("color_switch_gray").setAttribute("onclick","color_change_gray()");
+    for (let i of document.querySelectorAll('[colorable="1"]')){i.style.background="#fde5ba";i.style.color="#000000";}
+    for (let i of document.querySelectorAll('[colorable="2"]')){i.style.background="#fde5ba";i.style.color="#000000";}
+    for (let i of document.querySelectorAll('[colorable="3"]')){i.style.background="#cc8800"}
 }
 </script>
 </body>
