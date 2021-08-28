@@ -22,6 +22,14 @@
         font-size:0.6em;
         color:#cc8800;
         }
+        .hintTextMobile{
+    padding: 3px 10px;
+    font-size: 0.8em;
+    font-weight: bold;
+    border-radius: 6px;
+    background: #fde5ba;
+    border-width: 0;
+        }
         #switchMobile{ 
             margin-top:30px; 
             height:22px;
@@ -41,6 +49,26 @@
 	-moz-transition:all linear 0.30s;
 	transition:all linear 0.30s;	
         }
+        .knowMobile{ 
+    position: absolute;
+    right: 52%;
+    padding: 5px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    background: #fde5ba;
+    border-width: 0;
+         }
+        .notknowMobile{ 
+    position: absolute;
+    left: 52%;
+    padding: 5px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    background: #fde5ba;
+    border-width: 0;
+         }
         .helpBG{position:absolute;top:0;left:0;width:100%;height:100%;}
         .helpBox{
                   overflow:auto;
@@ -153,8 +181,8 @@
     <p class="hintText" id="hint"><br /></p>
 </div>
 <div id="buttonsR">
-    <button id="know" onclick="knowAct()" hidden>我认识</button>
-    <button id="notknow" onclick="notknowAct()" hidden>我不认识</button>
+    <button class="knowButton" id="know" onclick="knowAct()" hidden>我认识</button>
+    <button class="notknowButton" id="notknow" onclick="notknowAct()" hidden>我不认识</button>
 </div>
     <br /><br />
     <p style="line-height:0%"></p>
@@ -168,13 +196,13 @@
     <div class="helpBox">
     <div id="helpText">
     <p>你好！这是我制作的背单词网页，祝你使用愉快！</p>
-    <p>本网站使用Cookie存储你的背单词数据，所以一定不要清空Cookie！</p>
+    <p>本网站使用Cookie存储你的背单词数据，所以正常情况下不要清空Cookie！</p>
     <p>三个月没有打开这个网站的话数据会自动删除哦，所以请按时打卡吧！</p>
-    <p>更新时数据也有可能自动清除。</p>
+    <p>更新时数据也有可能自动清除。此外，如果出现异常情况，也可以尝试清空Cookie。</p>
     <p>我的Github账号：<a href="https://github.com/Megusuri56" target="_blank">https://github.com/Megusuri56</a>，欢迎关注我！</p>
     <p style="text-align: right">目薬</p>
     </div>
-    <img id="help_1" src="img/help_1.png" title="help_1" style="position:absolute;height:90%;width:90%;max-height:600px;max-width:579px" hidden></img>
+    <img id="help_1" src="img/help_1.png" title="help_1" style="position: absolute;width: 90%;max-height: 90%;margin: auto;max-width: 579px;top:5%;bottom:5%;left:5%;right:5%" hidden></img>
     <img id="page_left" src="img/page_left_disabled.png" title="向左翻页" style="position:absolute;bottom: 10px;left:47%"></img>
     <img id="page_right" src="img/page_right.png" title="向右翻页" style="position:absolute;bottom: 10px;left:53%" onclick="page_right(0)"></img>
     </div>
@@ -228,12 +256,21 @@
     function checkCookie()
     {
         var cookie = document.cookie;
-        if (cookie == ""||getCookie("today")==""||getCookie("knowAmount")==""||getCookie("punchedIn")==""||getCookie("days")==""||getCookie("allwords")==""||getCookie("wordsAmount")==""||getCookie("oldwordsAmount")==""||getCookie("color_mode")=="")
+        if (cookie == "")
         {
             setCookie();
         }
         else
         {
+            if (getCookie("today")==""){document.cookie = "today="+today.toLocaleDateString()+";"+expires;}
+            if (getCookie("knowAmount")==""){document.cookie = "knowAmount="+knowAmount.toString()+";"+expires;}
+            if (getCookie("wordsAmount")==""){document.cookie = "wordsAmount="+wordsAmount.toString()+";"+expires;}
+            if (getCookie("oldwordsAmount")==""){document.cookie = "oldwordsAmount="+oldwordsAmount.toString()+";"+expires;}
+            if (getCookie("days")==""){document.cookie = "days="+days.toString()+";"+expires;}
+            if (getCookie("allwords")==""){document.cookie = "allwords="+allwords.toString()+";"+expires;}
+            if (getCookie("punchedIn")==""){document.cookie = "punchedIn="+punchedIn.toString()+";"+expires;}
+            if (getCookie("color_mode")==""){document.cookie = "color_mode="+color_mode+";"+expires;}
+
             if (getCookie("today")==today.toLocaleDateString())
             {
                 knowAmount = Number(getCookie("knowAmount"));
@@ -419,7 +456,13 @@ if (!!navigator.userAgent.match(/AppleWebKit.*Mobile.*/))
     document.getElementById("meaning").style="text-align: center";
     document.getElementById("buttons").style="margin-left:20%";
     document.getElementById("notknowW").style="text-decoration-line:underline;font-size:1.1em";
-    document.getElementById("buttonsR").style="margin: auto;width:133px";
+    document.getElementsByClassName("knowButton")[0].className="knowMobile";
+    document.getElementsByClassName("knowMobile")[0].setAttribute("colorable","1");
+    document.getElementsByClassName("notknowButton")[0].className="notknowMobile";
+    document.getElementsByClassName("notknowMobile")[0].setAttribute("colorable","1");
+    document.getElementById("notknowW").className="hintTextMobile";
+    document.getElementById("notknowW").style="";
+    document.getElementById("notknowW").setAttribute("colorable","1");
     document.getElementById("switchBox").id="switchMobile";
     document.getElementById("switch").innerHTML='<span colorable="1">切换模式</span>';
     document.getElementById("amount").style="line-height:130%;position:absolute;bottom:10px";
@@ -449,6 +492,7 @@ else
 }
 addNK(word.furigana);
 notknowLineGrow();
+setCookie();
 }
 function knowAct()
 {
@@ -555,16 +599,21 @@ function page_left(page)
 function inputWA()
 {
     document.getElementById("number_wa").value = Math.round(document.getElementById("number_wa").value);
-    if (document.getElementById("number_wa").value>200){document.getElementById("number_wa").value=200;}
+
     if (document.getElementById("number_wa").value<10){document.getElementById("number_wa").value=10;}
+    if (document.getElementById("number_wa").value<=oldwordsAmount){document.getElementById("number_wa").value=oldwordsAmount+1;}
+    if (document.getElementById("number_wa").value>200){document.getElementById("number_wa").value=200;}
     wordsAmount = document.getElementById("number_wa").value;
+    setCookie();
 }
 function inputOA()
 {
     document.getElementById("number_oa").value = Math.round(document.getElementById("number_oa").value);
     if (document.getElementById("number_oa").value>80){document.getElementById("number_oa").value=80;}
+    if (document.getElementById("number_oa").value>=wordsAmount){document.getElementById("number_oa").value=wordsAmount-1;}
     if (document.getElementById("number_oa").value<0){document.getElementById("number_oa").value=0;}
     oldwordsAmount = document.getElementById("number_oa").value;
+    setCookie();
 }
 function color_change_gray()
 {
@@ -573,7 +622,7 @@ function color_change_gray()
       document.getElementById("color_switch_gray").id="color_switch_gray_click";
       document.getElementById("color_switch_orange").setAttribute("onclick","color_change_orange()");
       document.getElementById("color_switch_gray_click").setAttribute("onclick","");
-    for (let i of document.querySelectorAll('[colorable="1"]')){i.style.background="#aaaaaa";i.style.color="#eeeeee";}
+    for (let i of document.querySelectorAll('[colorable="1"]')){i.style.background="#bbbbbb";i.style.color="#eeeeee";}
     for (let i of document.querySelectorAll('[colorable="2"]')){i.style.background="#dfdfdf";i.style.color="#000000";}
     for (let i of document.querySelectorAll('[colorable="3"]')){i.style.background="#aaaaaa"}
 }
