@@ -175,7 +175,7 @@
     <img id="voice" src="img/voice.png" onclick="Voice()" onmousemove='document.getElementById("copyHint").removeAttribute("hidden")' onmouseout='document.getElementById("copyHint").setAttribute("hidden",true)' title="音频" hidden></img><span class="hintText" id="copyHint" hidden>点击复制音频链接</span>
     <div id="copy"></div>
 <form name="input">
-        <input type="text" name="inputbox" oninput='check(document.getElementById("meaning").hidden==true)' onmousemove="showHint()" onmouseout="hideHint()" hidden />
+        <input type="text" name="inputbox" oninput='check()' onmousemove="showHint()" onmouseout="hideHint()" hidden />
         <span class="hintText" id="notknowW" style="text-decoration-line:underline" onclick="notknowAct()" hidden>查看答案</span>
 </form>
     <p class="hintText" id="hint"><br /></p>
@@ -240,6 +240,7 @@
     var color_mode = "orange";
     var notknowArr = new Array();
     var wordList;    
+    var showAnswer = false;
 
     checkBrowser();
     checkCookie();
@@ -360,12 +361,12 @@ if(mode =="write")
         }
 }
 
-function check(meaning_hidden)
+function check()
 {
 var input = document.forms["input"]["inputbox"].value;
 if(input==word.furigana+" ")
 {
-if (meaning_hidden){knowAct();}else{showWord();}
+if (!showAnswer){knowAct();}else{showWord();}
 document.forms["input"]["inputbox"].value = "";
 }
 } 
@@ -401,6 +402,7 @@ xmlhttp.onreadystatechange=function()
     }
     document.getElementById("meaning").innerHTML=word.meaning;
     modeAct();
+    showAnswer=false;
     document.getElementById("amount").getElementsByTagName("span")[0].innerHTML=knowAmount.toString();
     document.getElementById("amount").getElementsByTagName("span")[1].innerHTML=days.toString();
     document.getElementById("amount").getElementsByTagName("span")[2].innerHTML=allwords.toString();
@@ -418,6 +420,7 @@ xmlhttp.send();
     function showFurigana()
     {
     document.getElementById("word").innerHTML=word.word+"("+word.furigana+")";
+    showAnswer=true;
     }
 function Voice()
 {
