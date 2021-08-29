@@ -450,8 +450,7 @@ document.getElementById("copy").innerHTML='<input type="text" id="copyarea" valu
 document.getElementById("copyarea").select();
 document.execCommand("Copy")
 document.getElementById("copy").innerHTML="";
-var audio = new Audio(URL);
-audio.play();
+window.location.replace(URL);
 }
 function checkBrowser()
 {
