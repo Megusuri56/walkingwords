@@ -249,8 +249,6 @@
     document.getElementById("amount").removeAttribute("hidden");
     document.getElementById("voice").removeAttribute("hidden");
     document.getElementById("switch").removeAttribute("hidden");
-    document.forms["input"]["inputbox"].removeAttribute("hidden");
-    document.getElementById("notknowW").removeAttribute("hidden");
     document.getElementById("number_wa").setAttribute("value",wordsAmount.toString());
     document.getElementById("number_oa").setAttribute("value",oldwordsAmount.toString());
 
@@ -629,7 +627,7 @@ function color_change_gray()
       document.getElementById("color_switch_gray").id="color_switch_gray_click";
       document.getElementById("color_switch_orange").setAttribute("onclick","color_change_orange()");
       document.getElementById("color_switch_gray_click").setAttribute("onclick","");
-    for (let i of document.querySelectorAll('[colorable="1"]')){i.style.background="#bbbbbb";i.style.color="#eeeeee";}
+    for (let i of document.querySelectorAll('[colorable="1"]')){i.style.background="#b9b9b9";i.style.color="#eeeeee";}
     for (let i of document.querySelectorAll('[colorable="2"]')){i.style.background="#dfdfdf";i.style.color="#000000";}
     for (let i of document.querySelectorAll('[colorable="3"]')){i.style.background="#aaaaaa"}
     setCookie();
