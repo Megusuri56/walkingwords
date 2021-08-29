@@ -7,7 +7,8 @@
     <title>散步背单词</title>
     <meta name="author" content="目薬">
     <meta name="copyright" content="目薬">
-    <meta name="description" content="一个背日语单词的网站" />
+    <meta name="description" itemprop="description" content="一个背日语单词的网站" />
+    <meta itemprop="name" content="散步背单词"/>
     <link rel="shortcut icon" href="img/favicon.png">
     <style type="text/css">
         .topright{
@@ -221,7 +222,6 @@
      <p>配色模式</p>
      <div id="color_switch_orange_click"><span style="color:#FFB930">橙</span><span style="color:#F2F2C2">黄</span></div>
      <div id="color_switch_gray" onclick="color_change_gray()"><span style="color:#FFB930">橙</span><span style="color:#a3a3a3">灰</span></div>
-    <button onclick="shareToQQ()" style="background:#fde5ba;padding: 5px 15px;font-weight:bold;border-radius:8px;position:absolute;bottom:20px;border-width: 0" colorable="2">分享到QQ</button>
     </div>
     </div>
 </div>
@@ -644,11 +644,6 @@ function color_change_orange()
     for (let i of document.querySelectorAll('[colorable="2"]')){i.style.background="#fde5ba";i.style.color="#000000";}
     for (let i of document.querySelectorAll('[colorable="3"]')){i.style.background="#cc8800"}
     setCookie();
-}
-function shareToQQ()
-{
-    var URL = "https://connect.qq.com/widget/shareqq/index.html"+"?url="+"https://megusuri56.github.io/walkingwords"+"&title="+encodeURIComponent("散步背单词")+"&source="+"https://megusuri56.github.io/walkingwords"+"&summary="+encodeURIComponent("一个背日语单词的网站");
-    window.open(URL);
 }
 </script>
 </body>
