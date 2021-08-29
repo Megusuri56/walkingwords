@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="referrer" content="never">
     <title>散步背单词</title>
     <meta name="author" content="目薬">
     <meta name="copyright" content="目薬">
@@ -450,7 +451,8 @@ document.getElementById("copy").innerHTML='<input type="text" id="copyarea" valu
 document.getElementById("copyarea").select();
 document.execCommand("Copy")
 document.getElementById("copy").innerHTML="";
-window.location.replace(URL);
+var a = new Audio(URL);
+a.play();
 }
 function checkBrowser()
 {
