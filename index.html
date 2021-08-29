@@ -173,7 +173,7 @@
 </div>
 
 <div id="buttons">
-    <img id="voice" src="img/voice.png" onclick="Voice()" onmousemove='document.getElementById("copyHint").removeAttribute("hidden")' onmouseout='document.getElementById("copyHint").setAttribute("hidden",true)' title="音频" hidden></img><span class="hintText" id="copyHint" hidden>点击复制音频链接</span>
+    <img id="voice" src="img/voice.png" onclick="Voice()" title="音频" hidden></img>
     <div id="copy"></div>
 <form name="input">
         <input type="text" name="inputbox" oninput='check()' onmousemove="showHint()" onmouseout="hideHint()" hidden />
@@ -447,10 +447,6 @@ function b(a, b) {
         return a
     }
 var URL = "https://translate.google.cn/translate_tts?ie=UTF-8&q="+word.word+"&tl=ja&ie=UTF-8&total=1&idx=0&textlen=39&tk="+tk(word.word,tkk)+"&client=t&prev=input";
-document.getElementById("copy").innerHTML='<input type="text" id="copyarea" value="'+URL+'"/>';
-document.getElementById("copyarea").select();
-document.execCommand("Copy")
-document.getElementById("copy").innerHTML="";
 var a = new Audio(URL);
 a.play();
 }
