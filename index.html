@@ -10,6 +10,7 @@
     <meta name="description" itemprop="description" content="一个背日语单词的网站" />
     <meta itemprop="name" content="散步背单词"/>
     <meta property="og:title" content="散步背单词" />
+    <meta id="image" itemprop="image" content="https://megusuri56.github.io/walkingwords/img/help_1.png"/>
     <link rel="shortcut icon" href="img/favicon.png">
     <style type="text/css">
         .topright{
@@ -179,7 +180,7 @@
     <img id="voice" src="img/voice.png" onclick="Voice()" title="音频" hidden></img>
     <div id="copy"></div>
 <form name="input">
-        <input type="text" name="inputbox" oninput='check()' onmousemove="showHint()" onmouseout="hideHint()" hidden />
+        <input type="text" name="inputbox" onkeydown="check()" onmousemove="showHint()" onmouseout="hideHint()" hidden />
         <span class="hintText" id="notknowW" style="text-decoration-line:underline" onclick="notknowAct()" hidden>查看答案</span>
 </form>
     <p class="hintText" id="hint"><br /></p>
@@ -349,6 +350,7 @@ if(mode =="write")
             document.forms["input"]["inputbox"].removeAttribute("hidden");
             document.getElementById("meaning").removeAttribute("hidden");
             document.getElementById("notknowW").removeAttribute("hidden");
+            document.forms["input"]["inputbox"].value = "";
         }
         else
         {
@@ -366,10 +368,9 @@ if(mode =="write")
 function check()
 {
 var input = document.forms["input"]["inputbox"].value;
-if(input==word.f+" ")
+if(input==word.f&&event.keyCode==32)
 {
 if (!showAnswer){knowAct();}else{showWord();}
-document.forms["input"]["inputbox"].value = "";
 }
 } 
 
