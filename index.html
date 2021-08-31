@@ -365,9 +365,18 @@ if(mode =="write")
         }
 }
 
+function checkMobile()
+{
+let input = document.forms["input"]["inputbox"].value;
+if(input==word.f+" ")
+{
+if (!showAnswer){knowAct();}else{showWord();}
+}
+} 
+
 function check()
 {
-var input = document.forms["input"]["inputbox"].value;
+let input = document.forms["input"]["inputbox"].value;
 if(input==word.f&&event.keyCode==32)
 {
 if (!showAnswer){knowAct();}else{showWord();}
@@ -480,6 +489,8 @@ if (!!navigator.userAgent.match(/AppleWebKit.*Mobile.*/))
     for(let i of document.getElementById("amount").getElementsByTagName("span")){i.style="font-size:2em";}
     document.getElementsByClassName("bottom")[0].className="top";
     for(let i of document.getElementsByClassName("topright")){i.style.top="20px";}
+    document.forms["input"]["inputbox"].oninput=checkMobile;
+    document.forms["input"]["inputbox"].onkeydown=null;
 }
 }
 function punchIn()
