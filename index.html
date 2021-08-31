@@ -9,6 +9,7 @@
     <meta name="copyright" content="目薬">
     <meta name="description" itemprop="description" content="一个背日语单词的网站" />
     <meta itemprop="name" content="散步背单词"/>
+    <meta property="og:title" content="散步背单词" />
     <link rel="shortcut icon" href="img/favicon.png">
     <style type="text/css">
         .topright{
@@ -342,7 +343,7 @@ function modeAct()
 {
 if(mode =="write")
         {
-            document.getElementById("word").innerHTML=word.word;
+            document.getElementById("word").innerHTML=word.w;//word.w：日语单词
             document.getElementById("know").setAttribute("hidden",true);
             document.getElementById("notknow").setAttribute("hidden",true);
             document.forms["input"]["inputbox"].removeAttribute("hidden");
@@ -351,7 +352,7 @@ if(mode =="write")
         }
         else
         {
-            document.getElementById("word").innerHTML=word.word+"("+word.furigana+")";
+            document.getElementById("word").innerHTML=word.w+"("+word.f+")";//word.f：日语假名
             document.getElementById("know").removeAttribute("hidden");
             document.getElementById("notknow").removeAttribute("hidden");
             document.forms["input"]["inputbox"].setAttribute("hidden",true);
@@ -365,7 +366,7 @@ if(mode =="write")
 function check()
 {
 var input = document.forms["input"]["inputbox"].value;
-if(input==word.furigana+" ")
+if(input==word.f+" ")
 {
 if (!showAnswer){knowAct();}else{showWord();}
 document.forms["input"]["inputbox"].value = "";
@@ -391,17 +392,19 @@ xmlhttp.onreadystatechange=function()
     wordList = wordList.RECORDS;
 
     document.getElementById("word").style.color="#000000";
-    let i=Math.round(Math.random()*wordsAmount);
-    if (i<=(wordsAmount-notknowArr.length))
+    let i=wordsAmount-knowAmount;
+    if (i<=0){i=2*notknowArr.length;}//打卡完成之后，新词率=0.5
+    i = i * Math.random();
+    if (i>=notknowArr.length)//新词概率=1-（notknowArr.length/剩余打卡词数）
     {
-        word=wordList[Math.round(Math.random()*1699)];
+        word = wordList[Math.round(Math.random()*1699)];
     }
     else
     {
-        word=findNK(notknowArr[Math.round(Math.random()*(notknowArr.length-1))]);
-        document.getElementById("word").style.color="#994d00";
+        word = findNK(notknowArr[Math.round(Math.random()*(notknowArr.length-1))]);
+        document.getElementById("word").style.color ="#994d00";
     }
-    document.getElementById("meaning").innerHTML=word.meaning;
+    document.getElementById("meaning").innerHTML=word.m;
     modeAct();
     showAnswer=false;
     document.getElementById("amount").getElementsByTagName("span")[0].innerHTML=knowAmount.toString();
@@ -420,7 +423,7 @@ xmlhttp.send();
     }
     function showFurigana()
     {
-    document.getElementById("word").innerHTML=word.word+"("+word.furigana+")";
+    document.getElementById("word").innerHTML=word.w+"("+word.f+")";
     showAnswer=true;
     }
 function Voice()
@@ -448,7 +451,7 @@ function b(a, b) {
         }
         return a
     }
-var URL = "https://translate.google.cn/translate_tts?ie=UTF-8&q="+word.word+"&tl=ja&ie=UTF-8&total=1&idx=0&textlen=39&tk="+tk(word.word,tkk)+"&client=t&prev=input";
+var URL = "https://translate.google.cn/translate_tts?ie=UTF-8&q="+word.w+"&tl=ja&ie=UTF-8&total=1&idx=0&textlen=39&tk="+tk(word.w,tkk)+"&client=t&prev=input";
 var a = new Audio(URL);
 a.play();
 }
@@ -496,13 +499,13 @@ else
     document.getElementById("know").innerHTML="下一个";
     document.getElementById("know").onclick=showWord;
 }
-addNK(word.furigana);
+addNK(word.f);
 notknowLineGrow();
 setCookie();
 }
 function knowAct()
 {
-    deleteNK(word.furigana);
+    deleteNK(word.f);
     showWord();
     knowAmount++;
     allwords++;
