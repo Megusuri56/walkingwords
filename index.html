@@ -397,11 +397,12 @@ xmlhttp.onreadystatechange=function()
     i = i * Math.random();
     if (i>=notknowArr.length)//新词概率=1-（notknowArr.length/剩余打卡词数）
     {
-        word = wordList[Math.round(Math.random()*1699)];
+        word = wordList[Math.round(Math.random()*wordList.length-1)];
     }
     else
     {
-        word = findNK(notknowArr[Math.round(Math.random()*(notknowArr.length-1))]);
+        let j = Math.round(Math.random()*(notknowArr.length-1));
+        word = findNK(notknowArr[j]);
         document.getElementById("word").style.color ="#994d00";
     }
     document.getElementById("meaning").innerHTML=word.m;
@@ -536,7 +537,7 @@ function findNK(target)
     {
         for(let w of wordList)
         {
-            if(w.furigana==target)
+            if(w.f==target)
             {
                 return w;
             }
