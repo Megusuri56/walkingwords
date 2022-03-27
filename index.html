@@ -176,9 +176,6 @@
     <h4 id="meaning" hidden></h4>
 </div>
 
-<div id="buttons">
-    <img id="voice" src="img/voice.png" onclick="Voice()" title="音频" hidden></img>
-    <div id="copy"></div>
 <form name="input">
         <input type="text" name="inputbox" onkeydown="check()" onmousemove="showHint()" onmouseout="hideHint()" hidden />
         <span class="hintText" id="notknowW" style="text-decoration-line:underline" onclick="notknowAct()" hidden>查看答案</span>
@@ -512,7 +509,6 @@ else
     document.getElementById("know").innerHTML="下一个";
     document.getElementById("know").onclick=showWord;
 }
-Voice();
 addNK(word.f);
 notknowLineGrow();
 setCookie();
