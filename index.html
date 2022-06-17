@@ -182,7 +182,7 @@
 </form>
     <p class="hintText" id="hint"><br /></p>
 </div>
-<div id="buttonsR">
+<div id="buttons">
     <button class="knowButton" id="know" onclick="knowAct()" hidden>我认识</button>
     <button class="notknowButton" id="notknow" onclick="notknowAct()" hidden>我不认识</button>
 </div>
@@ -249,7 +249,7 @@
     if (color_mode=="gray"){color_change_gray();}
     showWord();
     document.getElementById("amount").removeAttribute("hidden");
-    document.getElementById("voice").removeAttribute("hidden");
+    //document.getElementById("voice").removeAttribute("hidden");
     document.getElementById("switch").removeAttribute("hidden");
     document.getElementById("number_wa").setAttribute("value",wordsAmount.toString());
     document.getElementById("number_oa").setAttribute("value",oldwordsAmount.toString());
