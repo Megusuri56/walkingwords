@@ -375,7 +375,7 @@ if (!showAnswer){knowAct();}else{showWord();}
 function check()
 {
 let input = document.forms["input"]["inputbox"].value;
-if(input==word.f&&event.keyCode==32)
+if(input==word.f&&(event.keyCode==32||event.keyCode==229))
 {
 if (!showAnswer){knowAct();}else{showWord();}
 }
