@@ -176,8 +176,8 @@
     <h4 id="meaning" hidden></h4>
 </div>
 
-<form name="input">
-        <input type="text" name="inputbox" onkeydown="check()" onmousemove="showHint()" onmouseout="hideHint()" hidden />
+<form name="input" onsubmit="return false;">
+        <input type="text" name="inputbox" autocomplete="off" onkeydown="check()" onmousemove="showHint()" onmouseout="hideHint()" hidden />
         <span class="hintText" id="notknowW" style="text-decoration-line:underline" onclick="notknowAct()" hidden>查看答案</span>
 </form>
     <p class="hintText" id="hint"><br /></p>
